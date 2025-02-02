@@ -4,13 +4,13 @@ import com.akentech.microservices.order.dto.OrderRequest;
 import com.akentech.microservices.order.exception.OrderNotFoundException;
 import com.akentech.microservices.order.model.Order;
 import com.akentech.microservices.order.repository.OrderRepository;
+import com.akentech.microservices.order.util.OrderServiceUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +23,9 @@ public class OrderServiceImpl implements OrderService {
     public void placeOrder(OrderRequest orderRequest) {
         log.info("Placing order with SKU Code: {}", orderRequest.skuCode());
 
-        Order order = new Order();
-        order.setOrderNumber(UUID.randomUUID().toString());
-        order.setPrice(orderRequest.price());
-        order.setSkuCode(orderRequest.skuCode());
-        order.setQuantity(orderRequest.quantity());
-
+        Order order = OrderServiceUtil.mapToOrder(orderRequest);
         orderRepository.save(order);
+
         log.info("Order placed successfully with ID: {}", order.getId());
     }
 
@@ -49,12 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrder(Long id, OrderRequest orderRequest) {
         log.info("Updating order with ID: {}", id);
 
-        Order existingOrder = orderRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Order not found with ID: {}", id);
-                    return new OrderNotFoundException("Order not found with id: " + id);
-                });
-
+        Order existingOrder = OrderServiceUtil.findOrderByIdOrThrow(orderRepository, id);
         existingOrder.setPrice(orderRequest.price());
         existingOrder.setSkuCode(orderRequest.skuCode());
         existingOrder.setQuantity(orderRequest.quantity());
