@@ -67,6 +67,12 @@
 			<version>1.19.3</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>5.5.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
@@ -84,6 +90,19 @@
 			<version>1.16.1</version> <!-- Use the latest stable version -->
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Spring Cloud Dependencies -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>2022.0.4</version> <!-- Compatible with Spring Boot 3.4.2 -->
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -111,7 +130,6 @@
 					<reuseForks>true</reuseForks>
 				</configuration>
 			</plugin>
-
 
 			<!-- Spring Boot Maven Plugin -->
 			<plugin>
