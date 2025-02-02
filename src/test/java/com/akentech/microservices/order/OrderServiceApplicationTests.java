@@ -45,7 +45,7 @@ class OrderServiceApplicationTests {
 		// Assert
 		List<Order> orders = orderService.getAllOrders();
 		assertEquals(1, orders.size());
-		assertEquals("iphone_15", orders.get(0).getSkuCode());
+		assertEquals("iphone_15", orders.getFirst().getSkuCode());
 	}
 
 	@Test
@@ -69,7 +69,7 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
 		orderService.placeOrder(orderRequest);
 		List<Order> orders = orderService.getAllOrders();
-		Long orderId = orders.get(0).getId();
+		Long orderId = orders.getFirst().getId();
 
 		// Act
 		Optional<Order> foundOrder = orderService.getOrderById(orderId);
@@ -85,7 +85,7 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
 		orderService.placeOrder(orderRequest);
 		List<Order> orders = orderService.getAllOrders();
-		Long orderId = orders.get(0).getId();
+		Long orderId = orders.getFirst().getId();
 
 		OrderRequest updatedOrderRequest = new OrderRequest(orderId, "ORDER123", "iphone_15_pro", BigDecimal.valueOf(1200.00), 2);
 
@@ -105,7 +105,7 @@ class OrderServiceApplicationTests {
 		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
 		orderService.placeOrder(orderRequest);
 		List<Order> orders = orderService.getAllOrders();
-		Long orderId = orders.get(0).getId();
+		Long orderId = orders.getFirst().getId();
 
 		// Act
 		orderService.deleteOrder(orderId);
