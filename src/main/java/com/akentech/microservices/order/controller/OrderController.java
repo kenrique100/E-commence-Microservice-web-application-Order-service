@@ -1,7 +1,7 @@
 package com.akentech.microservices.order.controller;
 
 import com.akentech.microservices.order.dto.OrderRequest;
-import com.akentech.microservices.order.model.Order;
+import com.akentech.microservices.order.dto.OrderResponse;
 import com.akentech.microservices.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,13 +26,13 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Order> getAllOrders() {
+    public List<OrderResponse> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Order> getOrderById(@PathVariable Long id) {
+    public Optional<OrderResponse> getOrderById(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 

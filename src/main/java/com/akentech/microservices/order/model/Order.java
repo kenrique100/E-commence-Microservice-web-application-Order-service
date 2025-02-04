@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +22,6 @@ public class Order {
     private String skuCode;
     private BigDecimal price;
     private Integer quantity;
+    private String productId;
+    private String inventoryId;
 }

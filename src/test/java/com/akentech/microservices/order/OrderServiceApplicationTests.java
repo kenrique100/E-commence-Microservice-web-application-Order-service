@@ -1,7 +1,7 @@
 package com.akentech.microservices.order;
 
 import com.akentech.microservices.order.dto.OrderRequest;
-import com.akentech.microservices.order.model.Order;
+import com.akentech.microservices.order.dto.OrderResponse;
 import com.akentech.microservices.order.repository.OrderRepository;
 import com.akentech.microservices.order.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,27 +37,27 @@ class OrderServiceApplicationTests {
 	@Test
 	void testPlaceOrder() {
 		// Arrange
-		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
+		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1, "product-123", "inventory-123");
 
 		// Act
 		orderService.placeOrder(orderRequest);
 
 		// Assert
-		List<Order> orders = orderService.getAllOrders();
+		List<OrderResponse> orders = orderService.getAllOrders();
 		assertEquals(1, orders.size());
-		assertEquals("iphone_15", orders.getFirst().getSkuCode());
+		assertEquals("iphone_15", orders.getFirst().skuCode());
 	}
 
 	@Test
 	void testGetAllOrders() {
 		// Arrange
-		OrderRequest orderRequest1 = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
-		OrderRequest orderRequest2 = new OrderRequest(null, "ORDER124", "samsung_s23", BigDecimal.valueOf(900.00), 2);
+		OrderRequest orderRequest1 = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1, "product-123", "inventory-123");
+		OrderRequest orderRequest2 = new OrderRequest(null, "ORDER124", "samsung_s23", BigDecimal.valueOf(900.00), 2, "product-456", "inventory-456");
 		orderService.placeOrder(orderRequest1);
 		orderService.placeOrder(orderRequest2);
 
 		// Act
-		List<Order> orders = orderService.getAllOrders();
+		List<OrderResponse> orders = orderService.getAllOrders();
 
 		// Assert
 		assertEquals(2, orders.size());
@@ -66,52 +66,53 @@ class OrderServiceApplicationTests {
 	@Test
 	void testGetOrderById() {
 		// Arrange
-		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
+		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1, "product-123", "inventory-123");
 		orderService.placeOrder(orderRequest);
-		List<Order> orders = orderService.getAllOrders();
-		Long orderId = orders.getFirst().getId();
+		List<OrderResponse> orders = orderService.getAllOrders();
+		Long orderId = orders.getFirst().id();
 
 		// Act
-		Optional<Order> foundOrder = orderService.getOrderById(orderId);
+		Optional<OrderResponse> foundOrder = orderService.getOrderById(orderId);
 
 		// Assert
 		assertTrue(foundOrder.isPresent());
-		assertEquals("iphone_15", foundOrder.get().getSkuCode());
+		assertEquals("iphone_15", foundOrder.get().skuCode());
 	}
 
 	@Test
 	void testUpdateOrder() {
 		// Arrange
-		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
+		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1, "product-123", "inventory-123");
 		orderService.placeOrder(orderRequest);
-		List<Order> orders = orderService.getAllOrders();
-		Long orderId = orders.getFirst().getId();
+		List<OrderResponse> orders = orderService.getAllOrders();
+		Long orderId = orders.getFirst().id();
 
-		OrderRequest updatedOrderRequest = new OrderRequest(orderId, "ORDER123", "iphone_15_pro", BigDecimal.valueOf(1200.00), 2);
+		OrderRequest updatedOrderRequest = new OrderRequest(orderId, "ORDER123", "iphone_15_pro", BigDecimal.valueOf(1200.00), 2, "product-123", "inventory-123");
 
 		// Act
 		orderService.updateOrder(orderId, updatedOrderRequest);
 
 		// Assert
-		Optional<Order> updatedOrder = orderService.getOrderById(orderId);
+		Optional<OrderResponse> updatedOrder = orderService.getOrderById(orderId);
 		assertTrue(updatedOrder.isPresent());
-		assertEquals("iphone_15_pro", updatedOrder.get().getSkuCode());
-		assertEquals(0, updatedOrder.get().getPrice().compareTo(BigDecimal.valueOf(1200.00))); // Use compareTo
-		assertEquals(2, updatedOrder.get().getQuantity());
+		assertEquals("iphone_15_pro", updatedOrder.get().skuCode());
+		assertEquals(0, updatedOrder.get().price().compareTo(BigDecimal.valueOf(1200.00))); // Use compareTo
+		assertEquals(2, updatedOrder.get().quantity());
 	}
+
 	@Test
 	void testDeleteOrder() {
 		// Arrange
-		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1);
+		OrderRequest orderRequest = new OrderRequest(null, "ORDER123", "iphone_15", BigDecimal.valueOf(1000.00), 1, "product-123", "inventory-123");
 		orderService.placeOrder(orderRequest);
-		List<Order> orders = orderService.getAllOrders();
-		Long orderId = orders.getFirst().getId();
+		List<OrderResponse> orders = orderService.getAllOrders();
+		Long orderId = orders.getFirst().id();
 
 		// Act
 		orderService.deleteOrder(orderId);
 
 		// Assert
-		Optional<Order> deletedOrder = orderService.getOrderById(orderId);
+		Optional<OrderResponse> deletedOrder = orderService.getOrderById(orderId);
 		assertFalse(deletedOrder.isPresent());
 	}
 }
