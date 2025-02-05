@@ -22,6 +22,4 @@ public class Order {
     private String skuCode;
     private BigDecimal price;
     private Integer quantity;
-    private String productId;
-    private String inventoryId;
 }
