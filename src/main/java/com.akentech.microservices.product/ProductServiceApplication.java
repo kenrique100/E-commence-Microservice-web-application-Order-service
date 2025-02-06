@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
  * Main application class for the Product Service.
  */
 @SpringBootApplication
-@EnableReactiveMongoRepositories(basePackages = "com.akentech.microservices.product.repository")
+@EnableReactiveMongoRepositories
 public class ProductServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProductServiceApplication.class, args);
