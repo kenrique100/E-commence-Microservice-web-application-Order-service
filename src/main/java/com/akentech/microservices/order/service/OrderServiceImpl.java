@@ -1,5 +1,6 @@
 package com.akentech.microservices.order.service;
 
+import com.akentech.microservices.common.dto.InventoryRequest;
 import com.akentech.microservices.order.client.InventoryClient;
 import com.akentech.microservices.order.dto.OrderRequest;
 import com.akentech.microservices.order.dto.OrderResponse;
@@ -25,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void placeOrder(OrderRequest orderRequest) {
         // Create an InventoryRequest object
-        var inventoryRequest = new com.akentech.microservices.inventory.dto.InventoryRequest(
+        var inventoryRequest = new InventoryRequest(
                 orderRequest.skuCode(), orderRequest.quantity());
 
         // Check inventory availability
