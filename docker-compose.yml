@@ -43,16 +43,17 @@ services:
   flyway:
     image: flyway/flyway
     container_name: flyway
+    restart: always
     depends_on:
       - mariadb
     command: [
-      "-url=jdbc:mariadb://mariadb:3306/order_service",
+      "-url=jdbc:mariadb://order-service-mariadb:3307/order_service?useSSL=false",
       "-user=root",
       "-password=Bundes9898",
       "migrate"
     ]
     volumes:
-      - ./db/migration:/flyway/sql
+      - ./resources/db/migration:/flyway/sql
 
 volumes:
   portainer_data:
