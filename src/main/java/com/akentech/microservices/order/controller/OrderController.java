@@ -5,6 +5,7 @@ import com.akentech.microservices.order.dto.OrderResponse;
 import com.akentech.microservices.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,13 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String placeOrder(@RequestBody OrderRequest orderRequest) {
-        orderService.placeOrder(orderRequest);
-        return "Order Placed Successfully";
+    public ResponseEntity<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+        try {
+            orderService.placeOrder(orderRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Order Placed Successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping
